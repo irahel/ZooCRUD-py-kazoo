@@ -4,14 +4,14 @@ import sys
 from strings import Strings
 
 def Command_treatment(enter):
-    splitted = str.split(enter) 
-    if enter == None or enter == '':
+    splitted = str.split(enter)
+    if enter is None or enter == '':
         print(strs.ERROR_PREFIX + strs.MESSAGE_COMMAND_EMPTY)        
         return False
-    elif not splitted[0] in reserved_words_commands:
+    elif splitted[0] not in reserved_words_commands:
         print(strs.ERROR_PREFIX + strs.MESSAGE_INCORRECT_USAGE_COMMAND)        
         return False
-    elif splitted[0] == reserved_words_commands[0] or splitted[0] == reserved_words_commands[4]:
+    elif splitted[0] in [reserved_words_commands[0], reserved_words_commands[4]]:
         if len(splitted) > 3:
             print(strs.ERROR_PREFIX + strs.MESSAGE_COMMAND_MANY_ARGUMMENTS)
             print(strs.SERVER_PREFIX + strs.MESSAGE_USAGE_CREATE_COMMAND)
@@ -20,7 +20,13 @@ def Command_treatment(enter):
             print(strs.ERROR_PREFIX + strs.MESSAGE_COMMAND_FEW_ARGUMMENTS)
             print(strs.SERVER_PREFIX + strs.MESSAGE_USAGE_CREATE_COMMAND)
             return False
-    elif splitted[0] == reserved_words_commands[1] or splitted[0] == reserved_words_commands[2] or splitted[0] == reserved_words_commands[3] or splitted[0] == reserved_words_commands[5] or splitted[0] == reserved_words_commands[6]:
+    elif splitted[0] in [
+        reserved_words_commands[1],
+        reserved_words_commands[2],
+        reserved_words_commands[3],
+        reserved_words_commands[5],
+        reserved_words_commands[6],
+    ]:
         if len(splitted) > 2:
             print(strs.ERROR_PREFIX + strs.MESSAGE_COMMAND_MANY_ARGUMMENTS)
             print(strs.SERVER_PREFIX + strs.MESSAGE_USAGE_READ_COMMAND)
@@ -120,7 +126,7 @@ else:
 
 #Stabilish Connection
 try:
-    zk = KazooClient(hosts=SERVER_IP+':'+SERVER_PORT)
+    zk = KazooClient(hosts=f'{SERVER_IP}:{SERVER_PORT}')
     zk.start()
     print(strs.SERVER_PREFIX + strs.MESSAGE_CONNECTED + "with " + SERVER_IP+":"+SERVER_PORT)
 except KazooException as e:
